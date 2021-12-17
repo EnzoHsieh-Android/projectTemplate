@@ -16,7 +16,7 @@ class MyApplication : Application() {
         super.onCreate()
 
         /** If Lingver not work checkout settings gradle if "maven { url 'https://jitpack.io' }" is exist */
-        /** This library solve the problem which has changed language 
+        /** This library solve the problem which has changed language
          * but when get context through fragment to get string in xml still not changed */
         Lingver.init(this)
         prefs = Prefs(applicationContext)
