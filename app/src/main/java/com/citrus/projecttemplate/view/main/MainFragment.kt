@@ -47,7 +47,7 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class MainFragment : BindingFragment<FragmentMainBinding>(), LifecycleObserver {
+class MainFragment : BindingFragment<FragmentMainBinding>(){
     override val bindingInflater: (LayoutInflater) -> ViewBinding
         get() = FragmentMainBinding::inflate
 
