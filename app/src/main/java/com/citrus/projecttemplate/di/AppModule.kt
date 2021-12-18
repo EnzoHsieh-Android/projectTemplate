@@ -74,11 +74,11 @@ interface AppModule {
 @InstallIn(FragmentComponent::class)
 object FragmentModule {
     @Provides
-    fun provideGoodsItemAdapter(fragment: Fragment,) =
+    fun provideGoodsItemAdapter(fragment: Fragment) =
         DemoItemAdapter(fragment.requireContext())
 
     @Provides
-    fun providePuzzleAdapter(fragment: Fragment,) =
+    fun providePuzzleAdapter(fragment: Fragment) =
         PuzzleAdapter(fragment.requireContext())
 
 }

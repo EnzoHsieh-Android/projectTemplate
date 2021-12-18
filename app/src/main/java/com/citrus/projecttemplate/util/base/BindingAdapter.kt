@@ -1,13 +1,11 @@
 package com.citrus.projecttemplate.util.base
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.citrus.projecttemplate.model.dto.PuzzleBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -78,6 +76,7 @@ abstract class BindingAdapter<VB : ViewBinding, DATA>(
     override fun onBindViewHolder(holder: BaseBindHolder, position: Int) {
         val adapterPosition = holder.adapterPosition
         convert(holder.binding as VB, data[adapterPosition], data.indexOf(data[adapterPosition]))
+
     }
 
     override fun getItemCount() = data.size

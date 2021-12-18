@@ -13,6 +13,7 @@ import javax.inject.Inject
 data class DemoPayLoad(val changes: List<DemoChange>)
 sealed class DemoChange {
     data class StyleChange(val color: String) : DemoChange()
+    data class TextChange(val text: String) : DemoChange()
 }
 
 class DemoItemAdapter @Inject constructor(val context: Context) :
@@ -36,6 +37,7 @@ class DemoItemAdapter @Inject constructor(val context: Context) :
             }
         }
     }
+
 
 
     override fun convert(binding: ItemViewDemoBinding, data: Meme, position: Int) {

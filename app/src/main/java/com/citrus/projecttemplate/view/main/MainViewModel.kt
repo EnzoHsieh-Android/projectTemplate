@@ -69,7 +69,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun getRandomPic() = viewModelScope.launch{
-        val list = _memeList.value._data
+        val list = _memeList.value.data
         val meme = list?.get((0 until list.size).random())
 
         _memePicUrl.emit(meme?.url ?: "")

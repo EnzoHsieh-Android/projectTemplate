@@ -62,11 +62,12 @@ class MainFragment : BindingFragment<FragmentMainBinding>(){
     @Inject
     lateinit var puzzleAdapter: PuzzleAdapter
 
+
+
     @RequiresApi(Build.VERSION_CODES.R)
     override fun initView() {
         viewModel.initLaunch()
         binding.apply {
-
             demoRv.apply {
                 layoutManager = GridLayoutManager(requireContext(), 3)
                 adapter = puzzleAdapter
@@ -113,7 +114,7 @@ class MainFragment : BindingFragment<FragmentMainBinding>(){
         lifecycleLatestFlow(viewModel.memeList) { state ->
             when (state) {
                 is Resource.Success -> {
-                    if (state.data.isNotEmpty()) {
+                    if (state?.data!!.isNotEmpty()) {
                         viewModel.getRandomPic()
                     }
                 }

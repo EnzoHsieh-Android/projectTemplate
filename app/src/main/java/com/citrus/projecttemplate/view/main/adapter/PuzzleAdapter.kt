@@ -10,6 +10,7 @@ import android.view.View
 import com.citrus.projecttemplate.databinding.ItemViewPuzzleBinding
 import com.citrus.projecttemplate.model.dto.PuzzleBitmap
 import com.citrus.projecttemplate.util.base.BindingAdapter
+import com.citrus.projecttemplate.util.ext.onSafeClick
 import javax.inject.Inject
 
 class PuzzleAdapter @Inject constructor(val context: Context) :
@@ -19,6 +20,8 @@ class PuzzleAdapter @Inject constructor(val context: Context) :
     override fun convert(binding: ItemViewPuzzleBinding, item: PuzzleBitmap, position: Int) {
         binding.apply {
             puzzle.setImageBitmap(item.bitmap)
+
+
 
             /**Long Click保存拖曳位置供drop時比對*/
             root.setOnLongClickListener {
@@ -45,9 +48,9 @@ class PuzzleAdapter @Inject constructor(val context: Context) :
 
             root.setOnDragListener { _, dragEvent ->
                 if (dragEvent.action == DragEvent.ACTION_DROP && dragPosition != position) {
-                   var result =  switchItem(dragPosition,position)
+                    var result = switchItem(dragPosition, position)
 
-                    if(result){
+                    if (result) {
                         onCompleteListener?.let { alert ->
                             alert()
                         }
