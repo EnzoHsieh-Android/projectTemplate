@@ -16,8 +16,7 @@ sealed class DemoChange {
     data class TextChange(val text: String) : DemoChange()
 }
 
-class DemoItemAdapter @Inject constructor(val context: Context) :
-    BindingAdapter<ItemViewDemoBinding, Meme>(ItemViewDemoBinding::inflate) {
+class DemoItemAdapter: BindingAdapter<ItemViewDemoBinding, Meme>(ItemViewDemoBinding::inflate) {
 
     override fun payloadConvert(
         payload: Any,

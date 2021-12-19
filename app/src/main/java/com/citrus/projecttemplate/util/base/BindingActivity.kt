@@ -9,6 +9,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.citrus.projecttemplate.util.i18n.LocaleHelper
+import dagger.hilt.android.AndroidEntryPoint
 
 
 abstract class BindingActivity<out VB : ViewBinding> : AppCompatActivity() {

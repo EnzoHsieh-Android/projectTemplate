@@ -5,9 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.citrus.projecttemplate.model.dto.Meme
 import com.citrus.projecttemplate.model.dto.PuzzleBitmap
-import com.citrus.projecttemplate.remote.Repository
+import com.citrus.projecttemplate.remote.MemeRepositoryImpl
 import com.citrus.projecttemplate.remote.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
@@ -19,9 +20,10 @@ sealed class DialogType {
     object DialogFragment : DialogType()
 }
 
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: Repository
+    private val useCase: MemeUseCase
 ) : ViewModel() {
 
     private val _result = MutableSharedFlow<DialogType>()
@@ -36,15 +38,16 @@ class MainViewModel @Inject constructor(
     private val _puzzle = MutableSharedFlow<List<PuzzleBitmap>>()
     val puzzle: SharedFlow<List<PuzzleBitmap>> = _puzzle
 
-
     private val _loadingStatus = MutableSharedFlow<Boolean>()
     val loadingStatus: SharedFlow<Boolean> = _loadingStatus
 
 
+
     fun initLaunch() {
         viewModelScope.launch {
-            repository.getMeme().collect { result ->
-                if (result is Resource.Loading) {
+            useCase.launch()
+            useCase.resultFlow.collect { result ->
+                if(result is Resource.Loading) {
                     _loadingStatus.emit(result.isLoading)
                     return@collect
                 }
@@ -70,9 +73,11 @@ class MainViewModel @Inject constructor(
 
     fun getRandomPic() = viewModelScope.launch{
         val list = _memeList.value.data
-        val meme = list?.get((0 until list.size).random())
-
-        _memePicUrl.emit(meme?.url ?: "")
+        Log.e("list",list.toString())
+        if(list?.isNotEmpty() == true) {
+            val meme = list?.get((0 until list.size).random())
+            _memePicUrl.emit(meme?.url ?: "")
+        }
     }
 
 

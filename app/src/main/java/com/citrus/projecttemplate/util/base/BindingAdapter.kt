@@ -1,6 +1,7 @@
 package com.citrus.projecttemplate.util.base
 
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -14,6 +15,8 @@ typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 abstract class BindingAdapter<VB : ViewBinding, DATA>(
     private val inflate: Inflate<VB>
 ) : RecyclerView.Adapter<BindingAdapter.BaseBindHolder>() {
+
+    lateinit var context:Context
 
     open var data: MutableList<DATA> = mutableListOf()
 
@@ -44,6 +47,7 @@ abstract class BindingAdapter<VB : ViewBinding, DATA>(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseBindHolder {
+        context = parent.context
         return BaseBindHolder(
             inflate.invoke(
                 LayoutInflater.from(parent.context),

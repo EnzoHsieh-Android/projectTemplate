@@ -114,7 +114,7 @@ class MainFragment : BindingFragment<FragmentMainBinding>(){
         lifecycleLatestFlow(viewModel.memeList) { state ->
             when (state) {
                 is Resource.Success -> {
-                    if (state?.data!!.isNotEmpty()) {
+                    if (state.data!!.isNotEmpty()) {
                         viewModel.getRandomPic()
                     }
                 }

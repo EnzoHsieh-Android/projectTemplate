@@ -4,7 +4,9 @@ package com.citrus.projecttemplate.di
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.BuildConfig
 import com.citrus.projecttemplate.remote.ApiService
+import com.citrus.projecttemplate.remote.MemeRepositoryImpl
 import com.citrus.projecttemplate.util.Constants
+import com.citrus.projecttemplate.view.main.MemeUseCase
 import com.citrus.projecttemplate.view.main.adapter.DemoItemAdapter
 import com.citrus.projecttemplate.view.main.adapter.PuzzleAdapter
 import com.google.gson.Gson
@@ -13,7 +15,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.FragmentComponent
+import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -69,16 +73,24 @@ interface AppModule {
     }
 }
 
+@Module
+@InstallIn(ViewModelComponent::class)
+object ViewModelModule {
+    @ExperimentalCoroutinesApi
+    @Provides
+    fun provideMemeUseCase(repository: MemeRepositoryImpl) =
+        MemeUseCase(repository)
+}
 
 @Module
 @InstallIn(FragmentComponent::class)
 object FragmentModule {
     @Provides
-    fun provideGoodsItemAdapter(fragment: Fragment) =
-        DemoItemAdapter(fragment.requireContext())
+    fun provideGoodsItemAdapter() =
+        DemoItemAdapter()
 
     @Provides
-    fun providePuzzleAdapter(fragment: Fragment) =
-        PuzzleAdapter(fragment.requireContext())
+    fun providePuzzleAdapter() =
+        PuzzleAdapter()
 
 }
