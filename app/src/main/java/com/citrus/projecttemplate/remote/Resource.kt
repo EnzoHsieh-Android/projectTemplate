@@ -10,10 +10,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import java.lang.Exception
 
-sealed class Resource<out T>(val data: T? = null, val message: String? = null,val isLoading:Boolean = false) {
+sealed class Resource<out T>(val data: T? = null, val message: String? = null) {
     class Success<T>(data: T) : Resource<T>(data = data)
     class Error<T>(message: String) : Resource<T>(message = message)
-    class Loading<T>(isLoading:Boolean) : Resource<T>(isLoading = isLoading)
+    class Loading<T> : Resource<T>()
 }
 
 class RetryCondition(val errorMsg: String) : Exception()

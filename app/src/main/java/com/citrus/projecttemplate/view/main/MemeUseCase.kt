@@ -1,20 +1,30 @@
 package com.citrus.projecttemplate.view.main
 
-import com.citrus.projecttemplate.model.dto.Meme
+
 import com.citrus.projecttemplate.remote.MemeRepositoryImpl
-import com.citrus.projecttemplate.remote.Resource
-import com.citrus.projecttemplate.util.base.BaseUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-class MemeUseCase  @Inject constructor(
+class MemeUseCase @Inject constructor(
     private val repository: MemeRepositoryImpl
-): BaseUseCase<Resource<MutableList<Meme>>>() {
+) {
+    operator fun invoke() = repository.getMeme()
 
-    override fun performAction(): Flow<Resource<MutableList<Meme>>> {
-       return repository.getMeme()
-    }
+
+
+    fun mergeResult(a:String , c:Int) =
+        combine(
+            repository.getSample(),
+            repository.getMeme(),
+            transform = { orgResult, newResult -> Pair(orgResult, newResult) }
+        ).map { (orgResult, newResult) ->
+
+        }
+
 
 }

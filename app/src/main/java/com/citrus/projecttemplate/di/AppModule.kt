@@ -1,7 +1,6 @@
 package com.citrus.projecttemplate.di
 
 
-import androidx.fragment.app.Fragment
 import androidx.viewbinding.BuildConfig
 import com.citrus.projecttemplate.remote.ApiService
 import com.citrus.projecttemplate.remote.MemeRepositoryImpl

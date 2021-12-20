@@ -10,6 +10,7 @@ import android.view.View
 import com.citrus.projecttemplate.databinding.ItemViewPuzzleBinding
 import com.citrus.projecttemplate.model.dto.PuzzleBitmap
 import com.citrus.projecttemplate.util.base.BindingAdapter
+import com.citrus.projecttemplate.util.ext.onSafeClick
 
 
 class PuzzleAdapter: BindingAdapter<ItemViewPuzzleBinding, PuzzleBitmap>(ItemViewPuzzleBinding::inflate) {

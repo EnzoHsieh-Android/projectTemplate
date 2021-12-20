@@ -6,10 +6,6 @@ import android.view.LayoutInflater
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
@@ -38,11 +34,14 @@ import android.graphics.BitmapFactory
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import androidx.lifecycle.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.citrus.projecttemplate.R
 import com.citrus.projecttemplate.model.dto.PuzzleBitmap
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -51,6 +50,7 @@ class MainFragment : BindingFragment<FragmentMainBinding>(){
     override val bindingInflater: (LayoutInflater) -> ViewBinding
         get() = FragmentMainBinding::inflate
 
+    @ExperimentalCoroutinesApi
     private val viewModel: MainViewModel by viewModels()
     private var job: Job? = null
     var orangeDialog: OrangeAlertDialog? = null
@@ -99,6 +99,7 @@ class MainFragment : BindingFragment<FragmentMainBinding>(){
         }
     }
 
+
     override fun initObserve() {
 
         lifecycleFlow(viewModel.puzzle) { list ->
@@ -115,13 +116,14 @@ class MainFragment : BindingFragment<FragmentMainBinding>(){
             when (state) {
                 is Resource.Success -> {
                     if (state.data!!.isNotEmpty()) {
+                        binding.progress.isVisible = false
                         viewModel.getRandomPic()
                     }
                 }
                 is Resource.Error -> {
                     Log.e("error", state.message!!)
                 }
-                is Resource.Loading -> Unit
+                is Resource.Loading ->  binding.progress.isVisible = true
             }
         }
 
@@ -198,6 +200,17 @@ class MainFragment : BindingFragment<FragmentMainBinding>(){
                 }
             }
         }
+
+
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.result.collect {
+
+                }
+            }
+        }
+
     }
 
     override fun initAction() {

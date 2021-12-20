@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.citrus.projecttemplate.model.dto.Meme
 import com.citrus.projecttemplate.model.dto.PuzzleBitmap
-import com.citrus.projecttemplate.remote.MemeRepositoryImpl
 import com.citrus.projecttemplate.remote.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,7 +28,7 @@ class MainViewModel @Inject constructor(
     private val _result = MutableSharedFlow<DialogType>()
     val result: SharedFlow<DialogType> = _result
 
-    private val _memeList = MutableStateFlow<Resource<MutableList<Meme>>>(Resource.Success(mutableListOf()))
+    private val _memeList = MutableStateFlow<Resource<MutableList<Meme>>>(Resource.Loading())
     val memeList: StateFlow<Resource<MutableList<Meme>>> = _memeList
 
     private val _memePicUrl = MutableSharedFlow<String> ()
@@ -45,13 +44,11 @@ class MainViewModel @Inject constructor(
 
     fun initLaunch() {
         viewModelScope.launch {
-            useCase.launch()
-            useCase.resultFlow.collect { result ->
-                if(result is Resource.Loading) {
-                    _loadingStatus.emit(result.isLoading)
-                    return@collect
-                }
-                _memeList.emit(result)
+            useCase.mergeResult("",1).collect {
+
+            }
+            useCase().collect {
+                _memeList.emit(it)
             }
         }
     }
@@ -73,10 +70,9 @@ class MainViewModel @Inject constructor(
 
     fun getRandomPic() = viewModelScope.launch{
         val list = _memeList.value.data
-        Log.e("list",list.toString())
         if(list?.isNotEmpty() == true) {
-            val meme = list?.get((0 until list.size).random())
-            _memePicUrl.emit(meme?.url ?: "")
+            val meme = list[(0 until list.size).random()]
+            _memePicUrl.emit(meme.url)
         }
     }
 
