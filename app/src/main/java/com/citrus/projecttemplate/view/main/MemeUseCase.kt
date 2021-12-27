@@ -2,14 +2,12 @@ package com.citrus.projecttemplate.view.main
 
 
 import com.citrus.projecttemplate.remote.MemeRepositoryImpl
+import com.citrus.projecttemplate.remote.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
+
 class MemeUseCase @Inject constructor(
     private val repository: MemeRepositoryImpl
 ) {
@@ -17,7 +15,10 @@ class MemeUseCase @Inject constructor(
 
 
 
-    fun mergeResult(a:String , c:Int) =
+
+
+
+    suspend fun mergeResult(a:String, c:Int) =
         combine(
             repository.getSample(),
             repository.getMeme(),
@@ -25,6 +26,5 @@ class MemeUseCase @Inject constructor(
         ).map { (orgResult, newResult) ->
 
         }
-
 
 }

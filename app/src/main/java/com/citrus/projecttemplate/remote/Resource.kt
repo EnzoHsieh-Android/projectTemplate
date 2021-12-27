@@ -10,20 +10,26 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import java.lang.Exception
 
-sealed class Resource<out T>(val data: T? = null, val message: String? = null) {
+sealed class Resource<T>(
+    val data: T? = null,
+    val message: String? = null,
+    val loading: Boolean = false
+) {
     class Success<T>(data: T) : Resource<T>(data = data)
     class Error<T>(message: String) : Resource<T>(message = message)
-    class Loading<T> : Resource<T>()
+    class Loading<T>(loading: Boolean) : Resource<T>(loading = loading)
 }
 
 class RetryCondition(val errorMsg: String) : Exception()
 
 /**基於sandwich進一步封裝含retry功能、error錯誤處理,僅抽出success各自實作*/
-fun <T, DATA> resultFlowData(
-    apiQuery: suspend () -> ApiResponse<T>,
-    onSuccess: (ApiResponse.Success<T>) -> Resource<MutableList<DATA>>
+/**crossinline：讓函數類型的參數可以被間接調用，但無法return*/
+/**noinline：函數類型的參數在inline時會無法被當成對象來使用，需用noinline局部關閉inline效果*/
+inline fun <reified T, DATA> resultFlowData(
+   crossinline apiAction: suspend () -> ApiResponse<T>,
+   noinline onSuccess: (ApiResponse.Success<T>) -> Resource<List<DATA>>
 ) = flow {
-    apiQuery.invoke().suspendOnSuccess {
+    apiAction().suspendOnSuccess {
         emit(onSuccess(this))
     }.suspendOnError {
         throw RetryCondition(this.statusCode.name)
@@ -31,8 +37,16 @@ fun <T, DATA> resultFlowData(
         throw RetryCondition(this.exception.message!!)
     }
 }.retryWhen { cause, attempt ->
-    if (cause is RetryCondition && attempt < 3) {
-        delay(1500)
+
+    val delayTime = when (attempt) {
+        0L -> 3000L
+        1L -> 9000L
+        2L -> 15000L
+        else -> 3000L
+    }
+
+    if (cause is RetryCondition && attempt < 2) {
+        delay(delayTime)
         return@retryWhen true
     } else {
         emit(Resource.Error(cause.message!!))
@@ -40,7 +54,7 @@ fun <T, DATA> resultFlowData(
     }
 }.catch {
     Log.e("catch error", "--")
-}.flowOn(Dispatchers.IO)
+}.onCompletion { emit(Resource.Loading(loading = false)) }.flowOn(Dispatchers.IO)
 
 
 

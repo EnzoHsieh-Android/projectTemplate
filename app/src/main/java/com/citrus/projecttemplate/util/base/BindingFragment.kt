@@ -43,12 +43,16 @@ abstract class BindingFragment<out T : ViewBinding> : Fragment() {
     }
 }
 
+/**StateFLow使用*/
 fun <T> Fragment.lifecycleFlow(flow: Flow<T>, collect: suspend (T) -> Unit) {
-    viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-        flow.collect(collect)
+    viewLifecycleOwner.lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            flow.collect(collect)
+        }
     }
 }
 
+/**SharedFlow使用*/
 fun <T> Fragment.lifecycleLatestFlow(flow: Flow<T>, collect: suspend (T) -> Unit) {
     viewLifecycleOwner.lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {

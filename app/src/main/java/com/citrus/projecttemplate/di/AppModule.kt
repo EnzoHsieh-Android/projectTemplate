@@ -16,7 +16,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.FragmentComponent
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -68,14 +67,12 @@ interface AppModule {
         @Singleton
         fun provideApiService(retrofit: Retrofit): ApiService =
             retrofit.create(ApiService::class.java)
-
     }
 }
 
 @Module
 @InstallIn(ViewModelComponent::class)
 object ViewModelModule {
-    @ExperimentalCoroutinesApi
     @Provides
     fun provideMemeUseCase(repository: MemeRepositoryImpl) =
         MemeUseCase(repository)

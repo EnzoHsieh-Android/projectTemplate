@@ -21,7 +21,6 @@ class PuzzleAdapter: BindingAdapter<ItemViewPuzzleBinding, PuzzleBitmap>(ItemVie
             puzzle.setImageBitmap(item.bitmap)
 
 
-
             /**Long Click保存拖曳位置供drop時比對*/
             root.setOnLongClickListener {
                 val vibrator: Vibrator =

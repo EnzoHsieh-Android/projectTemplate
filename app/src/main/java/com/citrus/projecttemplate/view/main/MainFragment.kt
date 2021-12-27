@@ -50,7 +50,7 @@ class MainFragment : BindingFragment<FragmentMainBinding>(){
     override val bindingInflater: (LayoutInflater) -> ViewBinding
         get() = FragmentMainBinding::inflate
 
-    @ExperimentalCoroutinesApi
+
     private val viewModel: MainViewModel by viewModels()
     private var job: Job? = null
     var orangeDialog: OrangeAlertDialog? = null
@@ -67,6 +67,7 @@ class MainFragment : BindingFragment<FragmentMainBinding>(){
     @RequiresApi(Build.VERSION_CODES.R)
     override fun initView() {
         viewModel.initLaunch()
+
         binding.apply {
             demoRv.apply {
                 layoutManager = GridLayoutManager(requireContext(), 3)
@@ -201,15 +202,6 @@ class MainFragment : BindingFragment<FragmentMainBinding>(){
             }
         }
 
-
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.result.collect {
-
-                }
-            }
-        }
 
     }
 

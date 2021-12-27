@@ -19,7 +19,6 @@ sealed class DialogType {
     object DialogFragment : DialogType()
 }
 
-@ExperimentalCoroutinesApi
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val useCase: MemeUseCase
@@ -28,10 +27,10 @@ class MainViewModel @Inject constructor(
     private val _result = MutableSharedFlow<DialogType>()
     val result: SharedFlow<DialogType> = _result
 
-    private val _memeList = MutableStateFlow<Resource<MutableList<Meme>>>(Resource.Loading())
-    val memeList: StateFlow<Resource<MutableList<Meme>>> = _memeList
+    private val _memeList = MutableStateFlow<Resource<List<Meme>>>(Resource.Loading(true))
+    val memeList: StateFlow<Resource<List<Meme>>> = _memeList
 
-    private val _memePicUrl = MutableSharedFlow<String> ()
+    private val _memePicUrl = MutableSharedFlow<String>()
     val memePicUrl: SharedFlow<String> = _memePicUrl
 
     private val _puzzle = MutableSharedFlow<List<PuzzleBitmap>>()
@@ -41,16 +40,20 @@ class MainViewModel @Inject constructor(
     val loadingStatus: SharedFlow<Boolean> = _loadingStatus
 
 
-
-    fun initLaunch() {
-        viewModelScope.launch {
-            useCase.mergeResult("",1).collect {
-
+    fun initLaunch() = viewModelScope.launch{
+        useCase().collect { result ->
+            if(result is Resource.Loading){
+                _loadingStatus.emit(result.loading)
+                return@collect
             }
-            useCase().collect {
-                _memeList.emit(it)
-            }
+            _memeList.emit(Resource.Success(result.data!!))
         }
+
+//        viewModelScope.launch {
+//            useCase.mergeResult("",1).collect {
+//
+//            }
+//        }
     }
 
     fun clickEvent(dialogType: DialogType) = viewModelScope.launch {
@@ -68,10 +71,10 @@ class MainViewModel @Inject constructor(
         _puzzle.emit(list)
     }
 
-    fun getRandomPic() = viewModelScope.launch{
+    fun getRandomPic() = viewModelScope.launch {
         val list = _memeList.value.data
-        if(list?.isNotEmpty() == true) {
-            val meme = list[(0 until list.size).random()]
+        if (list?.isNotEmpty() == true) {
+            val meme = list[(list.indices).random()]
             _memePicUrl.emit(meme.url)
         }
     }

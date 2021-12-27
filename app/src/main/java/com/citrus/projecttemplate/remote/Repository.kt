@@ -4,7 +4,7 @@ import com.citrus.projecttemplate.model.dto.Meme
 import kotlinx.coroutines.flow.Flow
 
 interface Repository {
-    fun getMeme(): Flow<Resource<MutableList<Meme>>>
+    fun getMeme(): Flow<Resource<List<Meme>>>
 
-    fun getSample(): Flow<Resource<MutableList<Meme>>>
+    fun getSample(): Flow<Resource<List<Meme>>>
 }
