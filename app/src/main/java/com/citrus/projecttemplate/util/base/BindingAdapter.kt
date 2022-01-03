@@ -80,7 +80,6 @@ abstract class BindingAdapter<VB : ViewBinding, DATA>(
     override fun onBindViewHolder(holder: BaseBindHolder, position: Int) {
         val adapterPosition = holder.adapterPosition
         convert(holder.binding as VB, data[adapterPosition], data.indexOf(data[adapterPosition]))
-
     }
 
     override fun getItemCount() = data.size
@@ -90,6 +89,7 @@ abstract class BindingAdapter<VB : ViewBinding, DATA>(
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, data.size - 1)
     }
+
 
 
     abstract fun convert(binding: VB, item: DATA, position: Int)

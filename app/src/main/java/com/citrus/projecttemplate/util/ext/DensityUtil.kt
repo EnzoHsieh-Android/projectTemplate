@@ -1,6 +1,8 @@
 package com.citrus.projecttemplate.util.ext
 
 import android.content.Context
+import android.content.res.Resources
+import android.util.TypedValue
 
 object DensityUtil {
     fun Context.dp2px(dpValue: Float):Float {
@@ -21,6 +23,19 @@ object DensityUtil {
     fun Context.sp2px(spValue: Float): Int {
         val fontScale = this.resources.displayMetrics.scaledDensity
         return (spValue * fontScale + 0.5f).toInt()
+    }
+
+
+    inline fun <reified T> Resources.dpToPx(value: Int): T {
+        val result = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            value.toFloat(), displayMetrics)
+
+        return when (T::class) {
+            Float::class -> result as T
+            Int::class -> result.toInt() as T
+            else -> throw IllegalStateException("Type not supported")
+        }
     }
 
 }

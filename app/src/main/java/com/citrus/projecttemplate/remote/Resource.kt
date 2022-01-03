@@ -10,7 +10,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import java.lang.Exception
 
-sealed class Resource<T>(
+sealed class Resource<out T>(
     val data: T? = null,
     val message: String? = null,
     val loading: Boolean = false
@@ -25,9 +25,9 @@ class RetryCondition(val errorMsg: String) : Exception()
 /**基於sandwich進一步封裝含retry功能、error錯誤處理,僅抽出success各自實作*/
 /**crossinline：讓函數類型的參數可以被間接調用，但無法return*/
 /**noinline：函數類型的參數在inline時會無法被當成對象來使用，需用noinline局部關閉inline效果*/
-inline fun <reified T, DATA> resultFlowData(
-   crossinline apiAction: suspend () -> ApiResponse<T>,
-   noinline onSuccess: (ApiResponse.Success<T>) -> Resource<List<DATA>>
+ fun <T, DATA> resultFlowData(
+     apiAction: suspend () -> ApiResponse<T>,
+     onSuccess: (ApiResponse.Success<T>) -> Resource<List<DATA>>
 ) = flow {
     apiAction().suspendOnSuccess {
         emit(onSuccess(this))

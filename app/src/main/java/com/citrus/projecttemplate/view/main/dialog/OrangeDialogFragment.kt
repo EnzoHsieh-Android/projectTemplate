@@ -8,8 +8,8 @@ import androidx.viewbinding.ViewBinding
 import com.citrus.projecttemplate.databinding.FragmentOrangeDialogBinding
 import com.citrus.projecttemplate.util.base.BindingDialogFragment
 import com.citrus.projecttemplate.util.base.lifecycleFlow
+import com.citrus.projecttemplate.util.base.lifecycleLatestFlow
 import com.citrus.projecttemplate.util.ext.onSafeClick
-import com.citrus.projecttemplate.view.main.MainViewModel
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.skydoves.balloon.*
@@ -26,10 +26,26 @@ class OrangeDialogFragment : BindingDialogFragment<FragmentOrangeDialogBinding>(
     private var balloon: Balloon? = null
 
     override fun initView() {
-
+        Log.e("initView", "initView")
         viewModel.initLaunch()
         /**設定視窗大小*/
         setWindowWidthPercent(hPct = 0.6)
+    }
+
+    override fun initObserve() {
+        lifecycleFlow(viewModel.sharedPackString) { str ->
+            initBalloon(str)
+            YoYo.with(Techniques.Tada)
+                .duration(700)
+                .onEnd {
+                    balloon?.showAlignTop(binding.orange)
+                }
+                .playOn(binding.orange)
+        }
+
+    }
+
+    override fun initAction() {
         binding.apply {
             orange.onSafeClick { view ->
                 YoYo.with(Techniques.Tada)
@@ -42,17 +58,12 @@ class OrangeDialogFragment : BindingDialogFragment<FragmentOrangeDialogBinding>(
         }
     }
 
-    override fun initAction() {
-        lifecycleFlow(viewModel.sharedPackString){
-            initBalloon(it)
-        }
-    }
-
     override fun clearMemory() {
-        Log.e("","")
+        balloon = null
     }
 
-    private fun initBalloon(msg:String) {
+    private fun initBalloon(msg: String) {
+        Log.e("--", "Hi")
         balloon = createBalloon(requireContext()) {
             setArrowSize(10)
             setText(msg)

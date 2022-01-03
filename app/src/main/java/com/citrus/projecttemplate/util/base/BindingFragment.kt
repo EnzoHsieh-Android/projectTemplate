@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -44,19 +43,20 @@ abstract class BindingFragment<out T : ViewBinding> : Fragment() {
 }
 
 /**StateFLow使用*/
-fun <T> Fragment.lifecycleFlow(flow: Flow<T>, collect: suspend (T) -> Unit) {
+fun <T> Fragment.lifecycleFlow(flow: Flow<T>, action: suspend (T) -> Unit) {
     viewLifecycleOwner.lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            flow.collect(collect)
+            /**update coroutine to 1.6.0 change this collect behavior,keep watch this issue*/
+            flow.collect{ action(it) }
         }
     }
 }
 
 /**SharedFlow使用*/
-fun <T> Fragment.lifecycleLatestFlow(flow: Flow<T>, collect: suspend (T) -> Unit) {
+fun <T> Fragment.lifecycleLatestFlow(flow: Flow<T>, action: suspend (T) -> Unit) {
     viewLifecycleOwner.lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            flow.collectLatest(collect)
+            flow.collectLatest(action)
         }
     }
 }

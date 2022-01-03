@@ -63,6 +63,7 @@ abstract class BindingDialogFragment<out T : ViewBinding> : DialogFragment() {
         setWindowWidthPercent()
         initView()
         initAction()
+        initObserve()
         if (isFullScreen) {
             setFullScreen()
         }
@@ -70,6 +71,7 @@ abstract class BindingDialogFragment<out T : ViewBinding> : DialogFragment() {
 
     abstract fun initView()
     abstract fun initAction()
+    abstract fun initObserve()
     abstract fun clearMemory()
 
     //if add this, click editText, window will not pop to top
