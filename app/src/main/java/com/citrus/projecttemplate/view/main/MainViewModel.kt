@@ -7,10 +7,8 @@ import com.citrus.projecttemplate.model.dto.Meme
 import com.citrus.projecttemplate.model.dto.PuzzleBitmap
 import com.citrus.projecttemplate.remote.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import java.util.*
 import java.util.Collections.shuffle
 import javax.inject.Inject
 
@@ -40,9 +38,9 @@ class MainViewModel @Inject constructor(
     val loadingStatus: SharedFlow<Boolean> = _loadingStatus
 
 
-    fun initLaunch() = viewModelScope.launch{
+    fun initLaunch() = viewModelScope.launch {
         useCase().collect { result ->
-            if(result is Resource.Loading){
+            if (result is Resource.Loading) {
                 _loadingStatus.emit(result.loading)
                 return@collect
             }
@@ -80,4 +78,22 @@ class MainViewModel @Inject constructor(
     }
 
 
+}
+
+fun flowTest() {
+    println("inside flow first")
+}
+
+fun flowTest2() {
+    println("inside flow second")
+}
+
+
+fun main() {
+    runBlocking {
+        flowTest()
+        flowTest2()
+        println("outside flow")
+    }
+    println("outside scope")
 }

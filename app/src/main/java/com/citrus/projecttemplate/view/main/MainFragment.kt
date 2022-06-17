@@ -34,6 +34,7 @@ import android.graphics.BitmapFactory
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -54,6 +55,7 @@ class MainFragment : BindingFragment<FragmentMainBinding>(){
     private val viewModel: MainViewModel by viewModels()
     private var job: Job? = null
     var orangeDialog: OrangeAlertDialog? = null
+    var orangeDialogFragment :DialogFragment? = null
     private var puzzleList: MutableList<PuzzleBitmap>? = null
 
     @Inject
@@ -82,7 +84,8 @@ class MainFragment : BindingFragment<FragmentMainBinding>(){
 
             btn.onSafeClick { v ->
                 v.clickAnimation {
-                    viewModel.clickEvent(DialogType.AlertDialog)
+//                    viewModel.clickEvent(DialogType.AlertDialog)
+                    findNavController().navigate(R.id.action_mainFragment_to_blankFragment)
                 }
             }
 

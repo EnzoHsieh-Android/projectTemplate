@@ -6,23 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".view.main.MainFragment">
 
-  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-      android:id="@+id/refresh"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      app:layout_constraintBottom_toTopOf="@+id/guildLine"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent">
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guildLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-      <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/demoRv"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          tools:listitem="@layout/item_view_demo" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/demoRv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_view_demo" />
 
-  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -38,25 +37,23 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:elevation="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/refresh"
-        app:layout_constraintBottom_toTopOf="@+id/btn"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/refresh">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_10"
-            android:text="Start Puzzle"
-            android:minLines="2"
             android:layout_gravity="center"
             android:gravity="center"
+            android:minLines="2"
+            android:padding="@dimen/padding_10"
+            android:text="Start Puzzle"
             android:textSize="20sp"
             android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>
-
 
 
     <androidx.cardview.widget.CardView
@@ -67,17 +64,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/start">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_10"
-            android:text="Alert Dialog"
-            android:minLines="2"
             android:layout_gravity="center"
             android:gravity="center"
+            android:minLines="2"
+            android:padding="@dimen/padding_10"
+            android:text="Alert Dialog"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -96,11 +92,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_10"
-            android:text="Dialog Fragment"
-            android:minLines="2"
             android:layout_gravity="center"
             android:gravity="center"
+            android:minLines="2"
+            android:padding="@dimen/padding_10"
+            android:text="Dialog Fragment"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -108,13 +104,19 @@
 
     <ProgressBar
         android:id="@+id/progress"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

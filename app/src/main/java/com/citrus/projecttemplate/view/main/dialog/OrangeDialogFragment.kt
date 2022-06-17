@@ -1,14 +1,12 @@
 package com.citrus.projecttemplate.view.main.dialog
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.fragment.app.viewModels
 import androidx.viewbinding.ViewBinding
 import com.citrus.projecttemplate.databinding.FragmentOrangeDialogBinding
 import com.citrus.projecttemplate.util.base.BindingDialogFragment
 import com.citrus.projecttemplate.util.base.lifecycleFlow
-import com.citrus.projecttemplate.util.base.lifecycleLatestFlow
 import com.citrus.projecttemplate.util.ext.onSafeClick
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
@@ -23,10 +21,10 @@ class OrangeDialogFragment : BindingDialogFragment<FragmentOrangeDialogBinding>(
 
     private val viewModel: DialogViewModel by viewModels()
 
+
     private var balloon: Balloon? = null
 
     override fun initView() {
-        Log.e("initView", "initView")
         viewModel.initLaunch()
         /**設定視窗大小*/
         setWindowWidthPercent(hPct = 0.6)
@@ -63,7 +61,6 @@ class OrangeDialogFragment : BindingDialogFragment<FragmentOrangeDialogBinding>(
     }
 
     private fun initBalloon(msg: String) {
-        Log.e("--", "Hi")
         balloon = createBalloon(requireContext()) {
             setArrowSize(10)
             setText(msg)

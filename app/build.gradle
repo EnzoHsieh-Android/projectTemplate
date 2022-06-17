@@ -75,7 +75,8 @@ dependencies {
     def sandwichVersion = "1.2.2"
     implementation "com.github.skydoves:sandwich:$sandwichVersion"
 
-
+    def paging_version = "3.1.1"
+    implementation("androidx.paging:paging-runtime:$paging_version")
 
     /** Coroutines */
     def coroutinesVersion = "1.6.0"
@@ -97,7 +98,7 @@ dependencies {
     implementation "com.github.YarikSOffice:lingver:$i18n_version"
 
     /** Balloon */
-    def balloon = '1.4.1'
+    def balloon = '1.4.3'
     implementation "com.github.skydoves:balloon:$balloon"
 
     /** ElasticViews & yoyo */

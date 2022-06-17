@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/blankFragment">
 
     <fragment
         android:id="@+id/mainFragment"
@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mainFragment_to_orangeDialogFragment"
             app:destination="@id/orangeDialogFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_blankFragment"
+            app:destination="@id/blankFragment" />
     </fragment>
 
     <dialog
@@ -20,4 +23,9 @@
         android:name="com.citrus.projecttemplate.view.main.dialog.OrangeDialogFragment"
         android:label="fragment_orange_dialog"
         tools:layout="@layout/fragment_orange_dialog" />
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="com.citrus.projecttemplate.BlankFragment"
+        android:label="fragment_blank"
+        tools:layout="@layout/fragment_blank" />
 </navigation>
