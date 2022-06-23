@@ -1,6 +1,5 @@
 package com.citrus.projecttemplate.remote
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.citrus.projecttemplate.model.dto.User
@@ -27,23 +26,17 @@ class RepoPagingSource(
 
 
         return try {
-            var users = repository.getUser(
+            val users = repository.getUser(
                 query = query,
                 page = if (query.isNotBlank()) 0 else params.loadSize * (position - 1),
                 itemPerPage = params.loadSize,
                 currentTime = currentTime
             )
 
-
-            val nextKey = if (users.isEmpty() || users.size < params.loadSize) {
-                null
-            } else {
-                position.plus(1)
-            }
             LoadResult.Page(
                 data = users.distinctBy { it.id },
                 prevKey = if (position == USER_LIST_STARTING_PAGE_INDEX) null else position - 1,
-                nextKey = nextKey
+                nextKey = if (users.isEmpty() || users.size < params.loadSize) null else position.plus(1)
             )
         } catch (exception: IOException) {
             return LoadResult.Error(exception)

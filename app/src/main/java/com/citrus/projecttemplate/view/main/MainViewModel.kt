@@ -46,12 +46,6 @@ class MainViewModel @Inject constructor(
             }
             _memeList.emit(Resource.Success(result.data!!))
         }
-
-//        viewModelScope.launch {
-//            useCase.mergeResult("",1).collect {
-//
-//            }
-//        }
     }
 
     fun clickEvent(dialogType: DialogType) = viewModelScope.launch {
@@ -80,20 +74,5 @@ class MainViewModel @Inject constructor(
 
 }
 
-fun flowTest() {
-    println("inside flow first")
-}
-
-fun flowTest2() {
-    println("inside flow second")
-}
 
 
-fun main() {
-    runBlocking {
-        flowTest()
-        flowTest2()
-        println("outside flow")
-    }
-    println("outside scope")
-}

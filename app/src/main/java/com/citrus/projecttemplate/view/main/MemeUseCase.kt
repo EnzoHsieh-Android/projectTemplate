@@ -13,17 +13,4 @@ class MemeUseCase @Inject constructor(
     private val repository: MemeRepositoryImpl
 ) {
     operator fun invoke() = repository.getMeme()
-
-     var job: Job? = null
-
-
-     fun mergeResult() = combine(
-             repository.getSample(),
-             repository.getMeme(),
-             transform = { orgResult, newResult -> Pair(orgResult, newResult) }
-         ).map { (orgResult, newResult) ->
-
-         }
-
-
 }

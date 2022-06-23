@@ -12,11 +12,8 @@ import androidx.paging.map
 import com.citrus.projecttemplate.model.dto.User
 import com.citrus.projecttemplate.remote.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -24,6 +21,7 @@ import kotlin.system.measureTimeMillis
 
 @HiltViewModel
 class BlankViewModel @Inject constructor(val repository: UserRepository) : ViewModel() {
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     val time: String = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
@@ -33,6 +31,7 @@ class BlankViewModel @Inject constructor(val repository: UserRepository) : ViewM
         .distinctUntilChanged()
         .onStart { emit("") }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @RequiresApi(Build.VERSION_CODES.O)
     var newResult = searches.flatMapLatest {
         repository.getSearchResults(it, time)
@@ -43,6 +42,17 @@ class BlankViewModel @Inject constructor(val repository: UserRepository) : ViewM
         Log.e("query", query)
         actionStateFlow.emit(query)
     }
+
+
+
+    sealed class UiState {
+        data class A(val data: String, val status: Int)
+        data class B(val data: String, val status: Int)
+        data class C(val data: String, val status: Int)
+    }
+
+
+
 
 
 }

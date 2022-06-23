@@ -23,7 +23,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 object Constants {
-    const val BASE_URL = "http://192.168.0.107:8080/"
+    const val BASE_URL = "https://api.imgflip.com/"
     const val SHARED_PREFERENCES_NAME = "sharedPref"
 
     @SuppressLint("SimpleDateFormat")
